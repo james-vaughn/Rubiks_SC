@@ -2,22 +2,34 @@ Class list:
 
 	Colors (type Enum)
 	Side (type Enum)
+	Direction(type Enum)
 	Face (mutible)
-	Cube (mutible)
+	Neighbors (mutible)
+	Cube (mutible, barricade)
 	Rotator (static, nested in cube)
+	ErrorLogger (singleton)
 
+**No inheritance
 
-Colors:
+public Colors:
 
 	-Enum of possible cube colors
+	-E.g. Red, blue, green, ...
 
 
-Side:
+public Side:
 
 	-Enum of sides relative to a spectator of the cube
-	-Front, back, top, bottom, Left, Right
+	-E.g. Front, back, top, bottom, Left, Right
 
-Face:
+
+public Direction:
+
+	-Enum of directions for rotations and side directions
+	-E.g. Clockwise, left, ...
+
+
+private Face:
 
 	Looks like:
 					Top
@@ -31,11 +43,12 @@ Face:
 	Variables:
 
 		-Contains a 2D Color array; stores the colors for each block
+		-Neighbors
 
 	Operations:
 
 		-constructor to set whole face as one color
-		-constructor to set initial state of face
+		-constructor to set initial state of face : 2d array of color
 		-getLeft,
 		-getRight,
 		-getTop,
@@ -43,18 +56,28 @@ Face:
 		-getFullFace
 		-setters for all of the above
 
-		(dont need middle)
+		(don't need middle)
 
-Rotator:
+
+private Neighbors:
+
+	-Stores info about the neighboring faces and what row/col is
+	being touched by the face
+
+	-Associates directions to faces w/ faces
+
+
+private Rotator:
 
 	Operations:
 
-		*Middle rotations handled by a top then bottom
+		*Middle rotations are not require by the spec
 		-Operations for rotating faces
 		-Getting what needs to be rotated
 		-setting the faces which were manipulated
 
-Cube:
+
+public Cube:
 
 	Logical layout:
 
@@ -69,5 +92,35 @@ Cube:
 	Operations:
 
 		-Pretty Printer
-		-Constructors to set initial state of faces
+		-Constructors to set initial state of faces : list of 2d arrays of colors
 		-constructor to set default state
+		-error handling for initial construction
+		-delegators
+
+		-Only class with public a method; method will take a side and direction
+		cube will error check the input and then delegate to the rotator
+
+	*The cube class with do initial error handling for inputs,
+	serving as the main barricade; all other exceptions will be logged
+	and throw a runtime exception
+	*Will delegate methods to the rotator
+
+
+private ErrorLogger:
+
+	Singleton that simply writes an error message an throws a runtimeException
+
+
+
+Pseudocode for rotations: (only reasonably complicated method)
+
+	def rotate(dir, face):
+
+			create temporary storage for 4 neighbors
+
+			for each neighbor in the face's neighbor list:
+				add to the temporary storage the correct row/col based on direction of the face to the neighbor
+
+			swap the temporary storages based on dir
+
+			rotate the contents of face based on dir
