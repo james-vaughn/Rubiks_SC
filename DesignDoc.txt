@@ -1,0 +1,73 @@
+Class list:
+
+	Colors (type Enum)
+	Side (type Enum)
+	Face (mutible)
+	Cube (mutible)
+	Rotator (static, nested in cube)
+
+
+Colors:
+
+	-Enum of possible cube colors
+
+
+Side:
+
+	-Enum of sides relative to a spectator of the cube
+	-Front, back, top, bottom, Left, Right
+
+Face:
+
+	Looks like:
+					Top
+
+		Left   (0,0) (0,1) (0,2)   Right
+		       (1,0) (1,1) (1,2)
+		       (2,0) (2,1) (2,2)
+
+			   		Bottom
+
+	Variables:
+
+		-Contains a 2D Color array; stores the colors for each block
+
+	Operations:
+
+		-constructor to set whole face as one color
+		-constructor to set initial state of face
+		-getLeft,
+		-getRight,
+		-getTop,
+		-getBottom,
+		-getFullFace
+		-setters for all of the above
+
+		(dont need middle)
+
+Rotator:
+
+	Operations:
+
+		*Middle rotations handled by a top then bottom
+		-Operations for rotating faces
+		-Getting what needs to be rotated
+		-setting the faces which were manipulated
+
+Cube:
+
+	Logical layout:
+
+						Top
+		Back	Left	Front	Right
+						Bottom
+
+	Variable:
+
+		-Map of Sides to Faces
+
+	Operations:
+
+		-Pretty Printer
+		-Constructors to set initial state of faces
+		-constructor to set default state
