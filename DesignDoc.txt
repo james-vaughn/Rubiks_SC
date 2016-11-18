@@ -4,32 +4,32 @@ Class list:
 	Side (type Enum)
 	Direction(type Enum)
 	Face (mutible)
-	Neighbors (mutible)
+	Neighbors (mutible, data class)
 	Cube (mutible, barricade)
 	Rotator (static, nested in cube)
 	ErrorLogger (singleton)
 
-**No inheritance
+**No inheritance currently planned
 
-public Colors:
+public enum Colors:
 
 	-Enum of possible cube colors
 	-E.g. Red, blue, green, ...
 
 
-public Side:
+public enum Side:
 
 	-Enum of sides relative to a spectator of the cube
 	-E.g. Front, back, top, bottom, Left, Right
 
 
-public Direction:
+public enum Direction:
 
 	-Enum of directions for rotations and side directions
 	-E.g. Clockwise, left, ...
 
 
-private Face:
+public class Face:
 
 	Looks like:
 					Top
@@ -40,7 +40,10 @@ private Face:
 
 			   		Bottom
 
-	Variables:
+	-Each point in the matrix would store a color
+	-generic concept of a face; direction of face in relation to the cube does not matter
+
+	Variables (private):
 
 		-Contains a 2D Color array; stores the colors for each block
 		-Neighbors
@@ -49,25 +52,47 @@ private Face:
 
 		-constructor to set whole face as one color
 		-constructor to set initial state of face : 2d array of color
-		-getLeft,
+
+		*As indicated by the diagram for directions
+
+		-getLeft: gets (0,0), (1,0), and (2,0),
 		-getRight,
 		-getTop,
 		-getBottom,
-		-getFullFace
+		-getFullFace: returns whole color matrix,
+
 		-setters for all of the above
 
-		(don't need middle)
+		(don't need middle according to the specs)
 
 
-private Neighbors:
+public data class Neighbors:
 
 	-Stores info about the neighboring faces and what row/col is
 	being touched by the face
 
 	-Associates directions to faces w/ faces
 
+	-pretty much only used to store data coherently and together
 
-private Rotator:
+	Variables:
+		-TopNeighbor
+		-BottomNeighbor
+		-LeftNeighbor
+		-RightNeighbor
+
+	Operations:
+		-getters and setters for all vars
+		-.equals for comparisons
+
+	E.g.:
+		TopNeighbor for LeftFace is TopFace
+		BottomNeighbor for BottomFace is BackFace
+
+
+private nested class Cube.Rotator:
+
+	-Handles the actual cube manipulations like rotation
 
 	Operations:
 
@@ -95,7 +120,7 @@ public Cube:
 		-Constructors to set initial state of faces : list of 2d arrays of colors
 		-constructor to set default state
 		-error handling for initial construction
-		-delegators
+		-delegators to the rotator which check for errors
 
 		-Only class with public a method; method will take a side and direction
 		cube will error check the input and then delegate to the rotator
@@ -103,24 +128,35 @@ public Cube:
 	*The cube class with do initial error handling for inputs,
 	serving as the main barricade; all other exceptions will be logged
 	and throw a runtime exception
-	*Will delegate methods to the rotator
+	*Will delegate methods to the rotator, serving as an interface to the rotator for cube manipulation purposes
 
 
-private ErrorLogger:
+public Singleton ErrorLogger:
 
-	Singleton that simply writes an error message an throws a runtimeException
+	Singleton that simply writes an error message an throws a runtimeException w/ messages about the failure
 
 
+Error handling strategy:
 
-Pseudocode for rotations: (only reasonably complicated method)
+	-Use ErrorLogger to globally handle errors
+	-send error messages through the logger and immediately die w/ a RuntimeException
+
+
+Pseudocode for rotations: (only done for reasonably complicated method)
 
 	def rotate(dir, face):
 
-			create temporary storage for 4 neighbors
+				Create temporary storage for 4 lists of 3 colors
 
-			for each neighbor in the face's neighbor list:
-				add to the temporary storage the correct row/col based on direction of the face to the neighbor
+				Retrieve the four neighboring lists of the specified face
 
-			swap the temporary storages based on dir
+				for each neighbor in the face's neighbor list:
+					add to the temporary storage the correct row/col based
+					on the direction of the face to the neighbor
 
-			rotate the contents of face based on dir
+				Swap the temporary storages based on dir
+
+				Set the correct rows/columns on neighboring sides to the correct colors
+
+				Rotate the contents of face based on dir
+					Use getters from Face class
