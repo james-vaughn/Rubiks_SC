@@ -26,4 +26,13 @@ public class Face {
         Colors squareColor = _colorsMatrix[row][col];
         return squareColor.toString().charAt(0);
     }
+
+
+    public Colors[] getTopRow() {
+        return _colorsMatrix[0];
+    }
+
+    public Colors[] getBottomRow() {
+        return _colorsMatrix[Constants.DIMENSIONS];
+    }
 }
