@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.logging.Logger;
 
 public final class Cube{
 
@@ -14,9 +15,99 @@ public final class Cube{
         _cubeFaces.put(Side.RIGHT, new Face(Colors.WHITE));
     }
 
-    //TODO barricade
     public Cube(List<Colors[][]> faceColors) {
 
+        //barricade
+        validateCubeLayout(faceColors);
+
+        _cubeFaces.put(Side.TOP, new Face(faceColors.get(0)));
+        _cubeFaces.put(Side.BOTTOM, new Face(faceColors.get(1)));
+        _cubeFaces.put(Side.FRONT, new Face(faceColors.get(2)));
+        _cubeFaces.put(Side.BACK, new Face(faceColors.get(3)));
+        _cubeFaces.put(Side.LEFT, new Face(faceColors.get(4)));
+        _cubeFaces.put(Side.RIGHT, new Face(faceColors.get(5)));
+    }
+
+
+    private void validateCubeLayout(List<Colors[][]> faceColors) {
+
+        if( faceColors.size() != Constants.SIDES_ON_A_CUBE ) {
+            ErrorLogger.getInstance().die("Not enough sides provided");
+        }
+
+        if( !areCentersUnique(faceColors) ) {
+            ErrorLogger.getInstance().die("Center pieces have repeats");
+        }
+        
+        if( !hasCorrectColorCounts(faceColors) ) {
+            ErrorLogger.getInstance().die("Wrong number of each square color present");
+        }
+
+        if( !hasCorrectDimensions(faceColors) ) {
+            ErrorLogger.getInstance().die("Bad dimensions for input");
+        }
+    }
+    
+    private boolean areCentersUnique(List<Colors[][]> faceColors) {
+        HashSet<Colors> usedCenters = new HashSet<>();
+
+        for (Colors[][] faceMatrix : faceColors) {
+            if( !usedCenters.add(faceMatrix[Constants.DIMENSIONS/2][Constants.DIMENSIONS/2]) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean hasCorrectColorCounts(List<Colors[][]> faceColors) {
+        HashMap<Colors, Integer> colorCounts = colorCountsMap(faceColors);
+
+        for(Integer count : colorCounts.values()) {
+
+            //if we dont have exactly 1 full face's worth of a color, fail
+            if( count != (Constants.DIMENSIONS * Constants.DIMENSIONS) ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private HashMap<Colors, Integer> colorCountsMap(List<Colors[][]> faceColors) {
+        HashMap<Colors, Integer> colorCounts = new HashMap<>();
+
+        for(Colors[][] faceMatrix : faceColors) {
+
+            for(int row = 0; row < Constants.DIMENSIONS; row++) {
+                for (int col = 0; col < Constants.DIMENSIONS; col++) {
+
+                    Colors squareColor = faceMatrix[row][col];
+                    Integer oldCount = colorCounts.get(squareColor);
+
+                    //if the color has not been found before, its count should be 0
+                    if( oldCount == null ) oldCount = 0;
+
+                    colorCounts.put(squareColor, oldCount + 1);
+
+                }
+            }
+
+        }
+
+        return colorCounts;
+    }
+
+    private boolean hasCorrectDimensions(List<Colors[][]> faceColors) {
+        for(Colors[][] faceMatrix : faceColors) {
+            if(faceMatrix.length != Constants.DIMENSIONS) return false;
+
+            for(int row = 0; row < Constants.DIMENSIONS; row++) {
+
+                if(faceMatrix[row].length != Constants.DIMENSIONS) return false;
+            }
+        }
+
+        return true;
     }
 
 
@@ -41,10 +132,11 @@ public final class Cube{
         outputCube(printLayout);
     }
 
+    //complexity of 4
     private void outputCube(List<List<Side>> printLayout) {
         for (int pictureHeight = 0; pictureHeight < Constants.PICTURE_HEIGHT; pictureHeight++) {
-            for (int faceHeight = 0; faceHeight < Constants.DIMENSIONS; faceHeight++) {
-                for (int pictureWidth = 0; pictureWidth <Constants.PICTURE_WIDTH; pictureWidth++) {
+            for (int faceHeight = 0; faceHeight < Constants.DIMENSIONS; faceHeight++) { //go through the image lines
+                for (int pictureWidth = 0; pictureWidth < Constants.PICTURE_WIDTH; pictureWidth++) {
 
                     Side sideToPrint = printLayout.get(pictureHeight).get(pictureWidth);
                     if (sideToPrint != null) {
