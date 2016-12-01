@@ -82,6 +82,8 @@ public final class Cube{
                 for (int col = 0; col < Constants.DIMENSIONS; col++) {
 
                     Colors squareColor = faceMatrix[row][col];
+                    Objects.requireNonNull(squareColor);
+
                     Integer oldCount = colorCounts.get(squareColor);
 
                     //if the color has not been found before, its count should be 0
