@@ -10,5 +10,9 @@ public class ErrorLogger {
         return _errorLogger;
     }
 
-
+    //write a message and then error out
+    public void die(String errorMessage) {
+        System.err.println(errorMessage);
+        throw new RuntimeException();
+    }
 }
