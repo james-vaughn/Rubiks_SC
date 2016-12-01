@@ -2,7 +2,7 @@ import java.util.Objects;
 
 public class Face {
 
-    Colors[][] _colorsMatrix = new Colors[Constants.DIMENSIONS][Constants.DIMENSIONS];
+    private Colors[][] _colorsMatrix = new Colors[Constants.DIMENSIONS][Constants.DIMENSIONS];
 
     //create a solid colored face
     public Face(Colors color)  {
@@ -21,4 +21,9 @@ public class Face {
         _colorsMatrix = colors.clone();
     }
 
+    //returns the front letter of the color for printing purposes
+    public char getColorLabel(int row, int col) {
+        Colors squareColor = _colorsMatrix[row][col];
+        return squareColor.toString().charAt(0);
+    }
 }
