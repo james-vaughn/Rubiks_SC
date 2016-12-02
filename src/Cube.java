@@ -176,6 +176,7 @@ public final class Cube{
         Objects.requireNonNull(side);
         Objects.requireNonNull(direction);
 
+        //barricade
         if( direction != Direction.CLOCKWISE && direction != Direction.COUNTER_CLOCKWISE ) {
             ErrorLogger.getInstance().die("You cannot rotate the cube is that direction");
         }

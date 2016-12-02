@@ -120,6 +120,10 @@ public class CubeTest {
     }
 
 
+    //for loops relating to the faces of the cube will never not run at least 1 time,
+    //so no branch tests need to be made for those not running
+
+
     //rotate
 
 
