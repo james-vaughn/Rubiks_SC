@@ -45,36 +45,36 @@ public final class Neighbors {
     static {
         Map<Side, List<Pair<Direction,Side>>> mappings = new HashMap<>();
 
-
         mappings.put(Side.TOP, Arrays.asList(new Pair<>(Direction.TOP, Side.BACK),
-                                             new Pair<>(Direction.TOP, Side.LEFT),
                                              new Pair<>(Direction.TOP, Side.RIGHT),
-                                             new Pair<>(Direction.TOP, Side.FRONT)));
+                                             new Pair<>(Direction.TOP, Side.FRONT),
+                                             new Pair<>(Direction.TOP, Side.LEFT)));
 
         mappings.put(Side.FRONT, Arrays.asList(new Pair<>(Direction.TOP, Side.BOTTOM),
                                                new Pair<>(Direction.RIGHT, Side.LEFT),
-                                               new Pair<>(Direction.LEFT, Side.RIGHT),
-                                               new Pair<>(Direction.BOTTOM, Side.TOP)));
+                                               new Pair<>(Direction.BOTTOM, Side.TOP),
+                                               new Pair<>(Direction.LEFT, Side.RIGHT)));
 
         mappings.put(Side.LEFT, Arrays.asList(new Pair<>(Direction.LEFT, Side.TOP),
-                                              new Pair<>(Direction.RIGHT, Side.BACK),
                                               new Pair<>(Direction.LEFT, Side.FRONT),
-                                              new Pair<>(Direction.LEFT, Side.BOTTOM)));
+                                              new Pair<>(Direction.LEFT, Side.BOTTOM),
+                                              new Pair<>(Direction.RIGHT, Side.BACK)));
 
         mappings.put(Side.RIGHT, Arrays.asList(new Pair<>(Direction.RIGHT, Side.TOP),
                                                new Pair<>(Direction.LEFT, Side.BACK),
-                                               new Pair<>(Direction.RIGHT, Side.FRONT),
-                                               new Pair<>(Direction.RIGHT, Side.BOTTOM)));
+                                               new Pair<>(Direction.RIGHT, Side.BOTTOM),
+                                               new Pair<>(Direction.RIGHT, Side.FRONT)));
 
         mappings.put(Side.BACK, Arrays.asList(new Pair<>(Direction.TOP, Side.TOP),
-                                              new Pair<>(Direction.RIGHT, Side.RIGHT),
                                               new Pair<>(Direction.LEFT, Side.LEFT),
-                                              new Pair<>(Direction.BOTTOM, Side.BOTTOM)));
+                                              new Pair<>(Direction.BOTTOM, Side.BOTTOM),
+                                              new Pair<>(Direction.RIGHT, Side.RIGHT)));
 
-        mappings.put(Side.BOTTOM, Arrays.asList(new Pair<>(Direction.BOTTOM, Side.BACK),
+        mappings.put(Side.BOTTOM, Arrays.asList(new Pair<>(Direction.BOTTOM, Side.FRONT),
                                                 new Pair<>(Direction.BOTTOM, Side.RIGHT),
-                                                new Pair<>(Direction.BOTTOM, Side.LEFT),
-                                                new Pair<>(Direction.BOTTOM, Side.FRONT)));
+                                                new Pair<>(Direction.BOTTOM, Side.BACK),
+                                                new Pair<>(Direction.BOTTOM, Side.LEFT)
+                                                ));
 
         NeighborMappings = Collections.unmodifiableMap(mappings);
     }

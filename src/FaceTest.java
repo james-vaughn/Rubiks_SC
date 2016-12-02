@@ -46,25 +46,25 @@ public class FaceTest {
     //tests not needed for the for loops not running as the constant wont change and is a natural #
 
 
-    //getTopRow
+    //getTop
 
 
     //structured basis
     //full coverage
     @Test
     public void Should_return_the_top_row_of_colors(){
-        assertArrayEquals(_colorsMatrix[0], _face.getTopRow());
+        assertArrayEquals(_colorsMatrix[0], _face.getTop());
     }
 
 
-    //getBottomRow
+    //getBottom
 
 
     //structured basis
     //full coverage
     @Test
     public void Should_return_the_bottom_row_of_colors(){
-        assertArrayEquals(_colorsMatrix[Constants.DIMENSIONS-1], _face.getBottomRow());
+        assertArrayEquals(_colorsMatrix[Constants.DIMENSIONS-1], _face.getBottom());
     }
 
 
@@ -111,10 +111,10 @@ public class FaceTest {
     public void Should_set_top_row() {
         Colors[] newArr = {Colors.ORANGE, Colors.RED, Colors.ORANGE};
 
-        assertArrayEquals(_colorsMatrix[0], _mutatingFace.getTopRow());
+        assertArrayEquals(_colorsMatrix[0], _mutatingFace.getTop());
 
         _mutatingFace.setTop(newArr);
-        assertArrayEquals(newArr, _mutatingFace.getTopRow());
+        assertArrayEquals(newArr, _mutatingFace.getTop());
     }
 
 
@@ -126,10 +126,10 @@ public class FaceTest {
     public void Should_set_bottom_row() {
         Colors[] newArr = {Colors.RED, Colors.WHITE, Colors.BLUE};
 
-        assertArrayEquals(_colorsMatrix[2], _mutatingFace.getBottomRow());
+        assertArrayEquals(_colorsMatrix[2], _mutatingFace.getBottom());
 
         _mutatingFace.setBottom(newArr);
-        assertArrayEquals(newArr, _mutatingFace.getBottomRow());
+        assertArrayEquals(newArr, _mutatingFace.getBottom());
     }
 
 

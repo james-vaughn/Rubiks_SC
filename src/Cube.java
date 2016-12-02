@@ -215,10 +215,10 @@ public final class Cube{
         //7 8 9       9 6 3  <-- reverse of right
         private void rotateFace(Side side) {
             Face face = _cubeFaces.get(side);
-            Colors[] tempColors = face.getTopRow();
+            Colors[] tempColors = face.getTop();
 
             face.setTop( reverseColors(face.getLeft()) );
-            face.setLeft(face.getBottomRow());
+            face.setLeft(face.getBottom());
             face.setBottom( reverseColors(face.getRight()) );
             face.setRight(tempColors);
         }
@@ -234,10 +234,79 @@ public final class Cube{
         }
 
         private void adjustNeighbors(Side side) {
-            Face tempFace = _cubeFaces.get(side);
-            Colors[] tempColors = tempFace.getTopRow();
 
+            List<Pair<Direction,Side>> mapping = Neighbors.NeighborMappings.get(side);
+            Pair<Direction,Side> tempNeighbor = mapping.get(0); //grab 1st neighbor to save its colors
 
+            //keep the 1st set of colors to set at the end
+            Colors[] tempColors = colorsFromNeighbor(tempNeighbor.first(), _cubeFaces.get(tempNeighbor.second()));
+
+            for(int index = mapping.size() - 1; index >= 1; index--) {
+                tempNeighbor = mapping.get(index);
+                Colors[] replacementColors = colorsFromNeighbor(tempNeighbor.first(), _cubeFaces.get(tempNeighbor.second()));
+
+                tempNeighbor = mapping.get((index + 1) % (mapping.size() -1 ) ); //4 wraps to 0
+                setNeighborsColors(tempNeighbor.first(), _cubeFaces.get(tempNeighbor.second()), replacementColors);
+            }
+
+            //manually set the 2nd side's colors to the original 1st side's colors (now the original 4th's)
+            tempNeighbor = mapping.get(1);
+            setNeighborsColors(tempNeighbor.first(), _cubeFaces.get(tempNeighbor.second()), tempColors);
+        }
+
+        private Colors[] colorsFromNeighbor(Direction direction, Face neighbor) {
+            Colors[] colors = new Colors[Constants.DIMENSIONS];
+
+            switch (direction) {
+                case TOP:
+                    colors = neighbor.getTop();
+                    break;
+
+                case RIGHT:
+                    colors = neighbor.getRight();
+                    break;
+
+                case BOTTOM:
+                    colors = neighbor.getBottom();
+                    break;
+
+                case LEFT:
+                    colors = neighbor.getLeft();
+                    break;
+
+                default:
+                    ErrorLogger.getInstance().die("Neighbor mappings contain bad directions");
+            }
+
+            return colors;
+        }
+
+        private void setNeighborsColors(Direction direction, Face neighbor, Colors[] replacement) {
+            switch (direction) {
+                case TOP:
+                    neighbor.setTop(replacement);
+                    break;
+
+                case RIGHT:
+                    neighbor.setRight(replacement);
+                    break;
+
+                case BOTTOM:
+                    neighbor.setBottom(replacement);
+                    break;
+
+                case LEFT:
+                    neighbor.setLeft(replacement);
+                    break;
+
+                default:
+                    ErrorLogger.getInstance().die("Neighbor mappings contain bad directions");
+            }
         }
     }
+
+    public class Exposer {
+
+    }
+
 }

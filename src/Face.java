@@ -28,11 +28,11 @@ public class Face {
     }
 
 
-    public Colors[] getTopRow() {
+    public Colors[] getTop() {
         return _colorsMatrix[0].clone();
     }
 
-    public Colors[] getBottomRow() {
+    public Colors[] getBottom() {
         return _colorsMatrix[Constants.DIMENSIONS-1].clone();
     }
 
