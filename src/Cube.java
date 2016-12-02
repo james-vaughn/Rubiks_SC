@@ -245,7 +245,7 @@ public final class Cube{
                 tempNeighbor = mapping.get(index);
                 Colors[] replacementColors = colorsFromNeighbor(tempNeighbor.first(), _cubeFaces.get(tempNeighbor.second()));
 
-                tempNeighbor = mapping.get((index + 1) % (mapping.size() -1 ) ); //4 wraps to 0
+                tempNeighbor = mapping.get((index + 1) % (mapping.size()) ); //4 wraps to 0
                 setNeighborsColors(tempNeighbor.first(), _cubeFaces.get(tempNeighbor.second()), replacementColors);
             }
 

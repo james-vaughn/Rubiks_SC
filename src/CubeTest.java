@@ -123,5 +123,99 @@ public class CubeTest {
     //rotate
 
 
-    //r
+    //structure basis
+    //basic case
+    @Test
+    public void Should_rotate_a_default_cube_face_clockwise() {
+        String expectOutput =
+                        "        BBB     \n" +
+                        "        BBB     \n" +
+                        "        YYY     \n" +
+                        "RRR YYG OOO BWW \n" +
+                        "RRR YYG OOO BWW \n" +
+                        "RRR YYG OOO BWW \n" +
+                        "        WWW     \n" +
+                        "        GGG     \n" +
+                        "        GGG     \n" ;
+
+        Cube testCube = new Cube();
+
+        testCube.rotate(Side.FRONT, Direction.CLOCKWISE);
+
+        testCube.prettyPrint();
+        assertEquals(expectOutput, outText.toString());
+
+    }
+
+    //structured basis
+    //other direction basic case
+    @Test
+    public void Should_rotate_a_default_cube_face_counter_clockwise() {
+        String expectOutput =
+                        "        BBB     \n" +
+                        "        BBB     \n" +
+                        "        WWW     \n" +
+                        "RRR YYB OOO GWW \n" +
+                        "RRR YYB OOO GWW \n" +
+                        "RRR YYB OOO GWW \n" +
+                        "        YYY     \n" +
+                        "        GGG     \n" +
+                        "        GGG     \n" ;
+
+        Cube testCube = new Cube();
+
+        testCube.rotate(Side.FRONT, Direction.COUNTER_CLOCKWISE);
+
+        testCube.prettyPrint();
+        assertEquals(expectOutput, outText.toString());
+
+    }
+
+    //structure basis
+    //basic case
+    @Test
+    public void Should_rotate_any_default_cube_face_clockwise() {
+        String expectOutput =
+                        "        RBB     \n" +
+                        "        RBB     \n" +
+                        "        RBB     \n" +
+                        "RRG YYY BOO WWW \n" +
+                        "RRG YYY BOO WWW \n" +
+                        "RRG YYY BOO WWW \n" +
+                        "        OGG     \n" +
+                        "        OGG     \n" +
+                        "        OGG     \n" ;
+
+        Cube testCube = new Cube();
+
+        testCube.rotate(Side.LEFT, Direction.CLOCKWISE);
+
+        testCube.prettyPrint();
+        assertEquals(expectOutput, outText.toString());
+
+    }
+
+    //structure basis
+    //advanced case
+    @Test
+    public void Should_rotate_cube_face_clockwise() {
+        String expectOutput =
+                        "        YWY     \n" +
+                        "        GBO     \n" +
+                        "        BYW     \n" +
+                        "OBO BRW RRG RBG \n" +
+                        "WRR BYO WOO YWG \n" +
+                        "WGR BOR YYO BRO \n" +
+                        "        GBW     \n" +
+                        "        GGW     \n" +
+                        "        YYG     \n" ;
+
+        Cube testCube = new Cube(_cubeColors);
+
+        testCube.rotate(Side.BOTTOM, Direction.CLOCKWISE);
+
+        testCube.prettyPrint();
+        assertEquals(expectOutput, outText.toString());
+
+    }
 }
