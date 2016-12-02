@@ -29,10 +29,52 @@ public class Face {
 
 
     public Colors[] getTopRow() {
-        return _colorsMatrix[0];
+        return _colorsMatrix[0].clone();
     }
 
     public Colors[] getBottomRow() {
-        return _colorsMatrix[Constants.DIMENSIONS];
+        return _colorsMatrix[Constants.DIMENSIONS].clone();
+    }
+
+    public Colors[] getLeft() {
+        Colors[] retArray = new Colors[Constants.DIMENSIONS];
+        for(int row = 0; row < Constants.DIMENSIONS; row++) {
+            retArray[row] = _colorsMatrix[row][0];
+        }
+
+        return retArray;
+    }
+
+    public Colors[] getRight() {
+        Colors[] retArray = new Colors[Constants.DIMENSIONS];
+        for(int row = 0; row < Constants.DIMENSIONS; row++) {
+            retArray[row] = _colorsMatrix[row][Constants.DIMENSIONS];
+        }
+
+        return retArray;
+    }
+
+    public void setTop(Colors[] newColors) {
+        _colorsMatrix[0] = newColors.clone();
+    }
+
+    public void setBottom(Colors[] newColors) {
+        _colorsMatrix[Constants.DIMENSIONS] = newColors.clone();
+    }
+
+    public void setLeft(Colors[] newColors) {
+        for (int row = 0; row < Constants.DIMENSIONS; row++) {
+            _colorsMatrix[row][0] = newColors[row];
+        }
+    }
+
+    public void setRight(Colors[] newColors) {
+        for (int row = 0; row < Constants.DIMENSIONS; row++) {
+            _colorsMatrix[row][Constants.DIMENSIONS] = newColors[row];
+        }
+    }
+
+    public Colors[][] getFullFace() {
+        return _colorsMatrix.clone();
     }
 }
