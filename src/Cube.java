@@ -125,7 +125,7 @@ public final class Cube{
         printLayout.add(Arrays.asList(null, null, Side.TOP, null));
 
         //middle row
-        printLayout.add(Arrays.asList(Side.FRONT,Side.RIGHT,Side.BACK,Side.LEFT));
+        printLayout.add(Arrays.asList(Side.BACK,Side.LEFT,Side.FRONT,Side.RIGHT));
 
         //bottom row
         printLayout.add(Arrays.asList(null, null, Side.BOTTOM, null));

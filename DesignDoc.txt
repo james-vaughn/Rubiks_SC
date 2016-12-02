@@ -107,7 +107,7 @@ public Cube:
 	Logical layout:
 
 						Top
-		Front	Right   Back	Left
+		Back	Left   Front	Right
 						Bottom
 
 	Variable:

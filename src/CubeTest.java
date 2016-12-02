@@ -3,8 +3,8 @@ import org.junit.Test;
 
 public class CubeTest {
 
-    Cube _defaultCube,
-         _cube;
+    private Cube _defaultCube,
+                 _cube;
 
     @Before
     public void SetUp() {
