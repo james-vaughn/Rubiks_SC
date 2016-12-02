@@ -31,8 +31,10 @@ public final class Cube{
 
     private void validateCubeLayout(List<Colors[][]> faceColors) {
 
+        Objects.requireNonNull(faceColors);
+
         if( faceColors.size() != Constants.SIDES_ON_A_CUBE ) {
-            ErrorLogger.getInstance().die("Not enough sides provided");
+            ErrorLogger.getInstance().die("Wrong number of sides provided");
         }
 
         if( !areCentersUnique(faceColors) ) {
@@ -73,6 +75,7 @@ public final class Cube{
         return true;
     }
 
+    //returns a map of colors to their # of appearances
     private HashMap<Colors, Integer> colorCountsMap(List<Colors[][]> faceColors) {
         HashMap<Colors, Integer> colorCounts = new HashMap<>();
 
@@ -131,11 +134,11 @@ public final class Cube{
         //bottom row
         printLayout.add(Arrays.asList(null, null, Side.BOTTOM, null));
 
-        outputCube(printLayout);
+        outputSides(printLayout);
     }
 
     //complexity of 4
-    private void outputCube(List<List<Side>> printLayout) {
+    private void outputSides(List<List<Side>> printLayout) {
         for (int pictureHeight = 0; pictureHeight < Constants.PICTURE_HEIGHT; pictureHeight++) {
             for (int faceHeight = 0; faceHeight < Constants.DIMENSIONS; faceHeight++) { //go through the image lines
                 for (int pictureWidth = 0; pictureWidth < Constants.PICTURE_WIDTH; pictureWidth++) {
@@ -255,6 +258,7 @@ public final class Cube{
             setNeighborsColors(tempNeighbor.first(), _cubeFaces.get(tempNeighbor.second()), tempColors);
         }
 
+        //complexity 4
         private Colors[] colorsFromNeighbor(Direction direction, Face neighbor) {
             Colors[] colors = new Colors[Constants.DIMENSIONS];
 
@@ -282,6 +286,7 @@ public final class Cube{
             return colors;
         }
 
+        //complexity 4
         private void setNeighborsColors(Direction direction, Face neighbor, Colors[] replacement) {
             switch (direction) {
                 case TOP:
@@ -304,10 +309,88 @@ public final class Cube{
                     ErrorLogger.getInstance().die("Neighbor mappings contain bad directions");
             }
         }
+
+        public class Exposer {
+
+            public void rotateFaceExposed(Side side) {
+                rotateFace(side);
+            }
+
+            public Colors[] reverseColorsExposed(Colors[] colors) {
+                return reverseColors(colors);
+            }
+
+            public void adjustNeighborsExposed(Side side) {
+                adjustNeighbors(side);
+            }
+
+            public Colors[] colorsFromNeighborExposed(Direction direction, Face neighbor) {
+                return colorsFromNeighbor(direction, neighbor);
+            }
+
+            public void setNeighborsColorsExposed(Direction direction, Face neighbor, Colors[] replacement) {
+                setNeighborsColors(direction, neighbor, replacement);
+            }
+        }
     }
 
     public class Exposer {
 
+        private Rotator.Exposer _rotatorExposer = _rotator. new Exposer();
+
+        public void validateCubeLayoutExposed(List<Colors[][]> faceColors) {
+            validateCubeLayout(faceColors);
+        }
+
+        public boolean areCentersUniqueExposed(List<Colors[][]> faceColors) {
+            return areCentersUnique(faceColors);
+        }
+
+        public boolean hasCorrectColorCountsExposed(List<Colors[][]> faceColors) {
+            return hasCorrectColorCounts(faceColors);
+        }
+
+        public boolean hasCorrectDimensionsExposed(List<Colors[][]> faceColors) {
+            return hasCorrectDimensions(faceColors);
+        }
+
+        public void outputSidesExposed(List<List<Side>> printLayout) {
+            outputSides(printLayout);
+        }
+
+        public void printBlankLineExposed() {
+            printBlankLine();
+        }
+
+        public void printFaceLineExposed(Side side, int row) {
+            printFaceLine(side, row);
+        }
+
+        //calls to the rotator's exposer, since the unit tests cannot create a rotator exposer
+
+        public void rotateFaceExposed(Side side) {
+            _rotatorExposer.rotateFaceExposed(side);
+        }
+
+        public Face getFace(Side side) {
+            return _cubeFaces.get(side);
+        }
+
+        public Colors[] reverseColorsExposed(Colors[] colors) {
+            return _rotatorExposer.reverseColorsExposed(colors);
+        }
+
+        public void adjustNeighborsExposed(Side side) {
+            _rotatorExposer.adjustNeighborsExposed(side);
+        }
+
+        public Colors[] colorsFromNeighborExposed(Direction direction, Face neighbor) {
+            return _rotatorExposer.colorsFromNeighborExposed(direction, neighbor);
+        }
+
+        public void setNeighborsColorsExposed(Direction direction, Face neighbor, Colors[] replacement) {
+            _rotatorExposer.setNeighborsColorsExposed(direction, neighbor, replacement);
+        }
     }
 
 }
