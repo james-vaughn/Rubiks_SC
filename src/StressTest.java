@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.assertNotEquals;
-
 public class StressTest {
 
     @Test
@@ -53,13 +51,6 @@ public class StressTest {
         randomlyRotate(cube);
         cube.prettyPrint();
 
-        //most like none of the face will be the same; could fail but Im not sure at what rate
-        assertNotEquals(topFaceColors, exposer.getFace(Side.TOP).getFullFace());
-        assertNotEquals(bottomFaceColors, exposer.getFace(Side.BOTTOM).getFullFace());
-        assertNotEquals(leftFaceColors, exposer.getFace(Side.LEFT).getFullFace());
-        assertNotEquals(rightFaceColors, exposer.getFace(Side.RIGHT).getFullFace());
-        assertNotEquals(frontFaceColors, exposer.getFace(Side.FRONT).getFullFace());
-        assertNotEquals(backFaceColors, exposer.getFace(Side.BACK).getFullFace());
     }
 
     private void randomlyRotate(Cube cube) {
