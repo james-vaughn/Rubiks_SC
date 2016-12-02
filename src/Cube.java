@@ -2,7 +2,8 @@ import java.util.*;
 
 public final class Cube{
 
-    HashMap<Side, Face> _cubeFaces = new HashMap<>();
+    private HashMap<Side, Face> _cubeFaces = new HashMap<>();
+    private Rotator _rotator = new Rotator();
 
     //Default to a full solved cube
     public Cube() {
@@ -171,8 +172,72 @@ public final class Cube{
     }
 
 
-    //handles manipulation of the cube
-    private static class Rotator {
+    public void rotate(Side side, Direction direction) {
+        Objects.requireNonNull(side);
+        Objects.requireNonNull(direction);
 
+        if( direction != Direction.CLOCKWISE && direction != Direction.COUNTER_CLOCKWISE ) {
+            ErrorLogger.getInstance().die("You cannot rotate the cube is that direction");
+        }
+
+        _rotator.rotate(side, direction);
+    }
+
+
+    //handles manipulation of the cube
+    //Had to be changed from a static class in order to access the face table; there is no other way
+    private class Rotator {
+
+        public void rotate(Side side, Direction direction) {
+
+            switch (direction) {
+
+                case CLOCKWISE:
+                    rotateClockwise(side);
+                    break;
+
+                case COUNTER_CLOCKWISE:
+                    for (int i = 0; i < Constants.ROTATIONS_TO_MAKE_A_COUNTER_CLOCKWISE_TURN; i++) {
+                        rotateClockwise(side);
+                    }
+                    break;
+            }
+
+        }
+
+        private void rotateClockwise(Side side) {
+            rotateFace(side);
+            adjustNeighbors(side);
+        }
+
+        //1 2 3       7 4 1  <-- reverse of left
+        //4 5 6  ==>  8 5 2
+        //7 8 9       9 6 3  <-- reverse of right
+        private void rotateFace(Side side) {
+            Face face = _cubeFaces.get(side);
+            Colors[] tempColors = face.getTopRow();
+
+            face.setTop( reverseColors(face.getLeft()) );
+            face.setLeft(face.getBottomRow());
+            face.setBottom( reverseColors(face.getRight()) );
+            face.setRight(tempColors);
+        }
+
+        private Colors[] reverseColors(Colors[] colors) {
+            Colors[] reverse = new Colors[colors.length];
+
+            for(int index = 0; index < colors.length; index++) {
+                reverse[index] = colors[ (colors.length - index) - 1 ];
+            }
+
+            return reverse;
+        }
+
+        private void adjustNeighbors(Side side) {
+            Face tempFace = _cubeFaces.get(side);
+            Colors[] tempColors = tempFace.getTopRow();
+
+
+        }
     }
 }
