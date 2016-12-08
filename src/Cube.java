@@ -1,21 +1,21 @@
 import java.util.*;
 
-/*
+/**
 Represents the Rubiks cube and serves as an intermediary between the user and the rotator
  */
 public final class Cube{
 
-    /*
+    /**
     Map of the side values to a face instance
      */
     private HashMap<Side, Face> _cubeFaces = new HashMap<>();
 
-    /*
+    /**
     Rotator instance for performing cube manipulations
      */
     private Rotator _rotator = new Rotator();
 
-    /*
+    /**
     Default constructor for a RUbiks cube
     Default to a full solved cube
      */
@@ -28,7 +28,7 @@ public final class Cube{
         _cubeFaces.put(Side.RIGHT, new Face(Colors.WHITE));
     }
 
-    /*
+    /**
     Alternate constructor which takes a list of color matrices and returns a Cube object if it is valid;
     @param faceColors A list of color matrices which correspond to the faces to construct. The list is of order:
                       TOP, BOTTOM, FRONT, BACK, LEFT, RIGHT
@@ -47,7 +47,7 @@ public final class Cube{
     }
 
 
-    /*
+    /**
     Checks if the faces feed into it compose a valid rubiks cube.
     Criteria: Number of faces, dimensions of the faces, amount of each square color, center uniqueness
     @param faceColors A list of colors which correspond to the faces to construct.
@@ -73,7 +73,7 @@ public final class Cube{
         }
     }
 
-    /*
+    /**
     Returns whether or not the center squares of the faces to construct are unique
     @param faceColors A list of colors which correspond to the faces to construct.
     @return boolean which is true if the centers are all unique and false if a repeat center color is found
@@ -89,7 +89,7 @@ public final class Cube{
         return true;
     }
 
-    /*
+    /**
     Returns whether or not the cube to construct has the right number of each color (1 full face worth of each color)
     @param faceColors A list of colors which correspond to the faces to construct.
     @return boolean which is true if the cube has the correct number of each color or false otherwise
@@ -108,7 +108,7 @@ public final class Cube{
         return true;
     }
 
-    /*
+    /**
     Creates a map of cube colors to their occurance count; acts as a counter for helping hasCorrectColorCounts
     @param faceColors A list of colors which correspond to the faces to construct.
     @return a map of colors to their # of appearances
@@ -139,7 +139,7 @@ public final class Cube{
         return colorCounts;
     }
 
-    /*
+    /**
     Returns whether or not the cube to construct has the proper dimensions for each face
     @param faceColors A list of colors which correspond to the faces to construct.
     @return boolean which is true if the faces are all of the correct dimension (Dimension x Dimension)
@@ -159,7 +159,7 @@ public final class Cube{
     }
 
 
-    /*
+    /**
     Prints out the cube in a readable format:
 
     formatting:
@@ -186,10 +186,10 @@ public final class Cube{
         outputSides(printLayout);
     }
 
-    /*
+    /**
     Outputs line-by-line the cube colors according to a given layout
 
-    @param List of a list of sides of the cube to print;
+    @param printLayout List of a list of sides of the cube to print;
            the inner list represents the width of the layout
            the outer list represents the heignt of the layout.
            Works like a side matrix
@@ -213,18 +213,18 @@ public final class Cube{
         }
     }
 
-    /*
+    /**
     Outputs a blank line of a face for the purposes of formatting
      */
     private void printBlankLine() {
         System.out.print("    ");
     }
 
-    /*
+    /**
     Outputs the color initial of each color in a given row of a given face
 
-    @params side What side of the cube of which we are printing the colors
-            row  What row of the given side we are printing
+    @param side What side of the cube of which we are printing the colors
+    @param row  What row of the given side we are printing
      */
     private void printFaceLine(Side side, int row) {
         Face face = _cubeFaces.get(side);
@@ -241,8 +241,11 @@ public final class Cube{
     }
 
 
-    /*
-
+    /**
+     * Performs a rotation to one of the faces of the rubiks cube and cascades the change to the side's neighbors.
+     * Delegates to the Rotator after verifying the input.
+     @param side Side of the cube to rotate
+     @param direction Direction of rotation. Must be clockwise or counter-clockwise
      */
     public void rotate(Side side, Direction direction) {
         Objects.requireNonNull(side);
@@ -256,11 +259,17 @@ public final class Cube{
         _rotator.rotate(side, direction);
     }
 
-
-    //handles manipulation of the cube
-    //Had to be changed from a static class in order to access the face table; there is no other way
+    /**
+     * Handles manipulation of the cube
+     * Had to be changed from a static class in order to access the face table; there is no other way
+     */
     private class Rotator {
 
+        /**
+         * Performs a rotation to one of the faces of the rubiks cube and cascades the change to the side's neighbors.
+         @param side Side of the cube to rotate
+         @param direction Direction of rotation. Must be clockwise or counter-clockwise
+         */
         public void rotate(Side side, Direction direction) {
 
             switch (direction) {
