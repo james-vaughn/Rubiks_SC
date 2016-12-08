@@ -1,11 +1,24 @@
 import java.util.*;
 
+/*
+Represents the Rubiks cube and serves as an intermediary between the user and the rotator
+ */
 public final class Cube{
 
+    /*
+    Map of the side values to a face instance
+     */
     private HashMap<Side, Face> _cubeFaces = new HashMap<>();
+
+    /*
+    Rotator instance for performing cube manipulations
+     */
     private Rotator _rotator = new Rotator();
 
-    //Default to a full solved cube
+    /*
+    Default constructor for a RUbiks cube
+    Default to a full solved cube
+     */
     public Cube() {
         _cubeFaces.put(Side.TOP, new Face(Colors.BLUE));
         _cubeFaces.put(Side.BOTTOM, new Face(Colors.GREEN));
@@ -15,6 +28,11 @@ public final class Cube{
         _cubeFaces.put(Side.RIGHT, new Face(Colors.WHITE));
     }
 
+    /*
+    Alternate constructor which takes a list of color matrices and returns a Cube object if it is valid;
+    @param faceColors A list of color matrices which correspond to the faces to construct. The list is of order:
+                      TOP, BOTTOM, FRONT, BACK, LEFT, RIGHT
+     */
     public Cube(List<Colors[][]> faceColors) {
 
         //barricade
@@ -29,6 +47,11 @@ public final class Cube{
     }
 
 
+    /*
+    Checks if the faces feed into it compose a valid rubiks cube.
+    Criteria: Number of faces, dimensions of the faces, amount of each square color, center uniqueness
+    @param faceColors A list of colors which correspond to the faces to construct.
+     */
     private void validateCubeLayout(List<Colors[][]> faceColors) {
 
         Objects.requireNonNull(faceColors);
@@ -49,7 +72,12 @@ public final class Cube{
             ErrorLogger.getInstance().die("Bad dimensions for input");
         }
     }
-    
+
+    /*
+    Returns whether or not the center squares of the faces to construct are unique
+    @param faceColors A list of colors which correspond to the faces to construct.
+    @return boolean which is true if the centers are all unique and false if a repeat center color is found
+     */
     private boolean areCentersUnique(List<Colors[][]> faceColors) {
         HashSet<Colors> usedCenters = new HashSet<>();
 
@@ -60,7 +88,12 @@ public final class Cube{
         }
         return true;
     }
-    
+
+    /*
+    Returns whether or not the cube to construct has the right number of each color (1 full face worth of each color)
+    @param faceColors A list of colors which correspond to the faces to construct.
+    @return boolean which is true if the cube has the correct number of each color or false otherwise
+     */
     private boolean hasCorrectColorCounts(List<Colors[][]> faceColors) {
         HashMap<Colors, Integer> colorCounts = colorCountsMap(faceColors);
 
@@ -75,7 +108,11 @@ public final class Cube{
         return true;
     }
 
-    //returns a map of colors to their # of appearances
+    /*
+    Creates a map of cube colors to their occurance count; acts as a counter for helping hasCorrectColorCounts
+    @param faceColors A list of colors which correspond to the faces to construct.
+    @return a map of colors to their # of appearances
+     */
     private HashMap<Colors, Integer> colorCountsMap(List<Colors[][]> faceColors) {
         HashMap<Colors, Integer> colorCounts = new HashMap<>();
 
@@ -102,6 +139,12 @@ public final class Cube{
         return colorCounts;
     }
 
+    /*
+    Returns whether or not the cube to construct has the proper dimensions for each face
+    @param faceColors A list of colors which correspond to the faces to construct.
+    @return boolean which is true if the faces are all of the correct dimension (Dimension x Dimension)
+                      and is false if any of the faces are of the wrong dimensions
+     */
     private boolean hasCorrectDimensions(List<Colors[][]> faceColors) {
         for(Colors[][] faceMatrix : faceColors) {
             if(faceMatrix.length != Constants.DIMENSIONS) return false;
@@ -116,10 +159,16 @@ public final class Cube{
     }
 
 
-    //formatting:
-    //              Top
-    //Front Right   Back	Left
-    //              Bottom
+    /*
+    Prints out the cube in a readable format:
+
+    formatting:
+                  Top
+    Back   Left   Front   Right
+                  Bottom
+
+    Will print out the 1st letter of the squares color at each position
+    */
     public void prettyPrint() {
         List<List<Side>> printLayout = new ArrayList<>();
 
@@ -137,10 +186,18 @@ public final class Cube{
         outputSides(printLayout);
     }
 
-    //complexity of 4
+    /*
+    Outputs line-by-line the cube colors according to a given layout
+
+    @param List of a list of sides of the cube to print;
+           the inner list represents the width of the layout
+           the outer list represents the heignt of the layout.
+           Works like a side matrix
+     */
     private void outputSides(List<List<Side>> printLayout) {
         for (int pictureHeight = 0; pictureHeight < Constants.PICTURE_HEIGHT; pictureHeight++) {
-            for (int faceHeight = 0; faceHeight < Constants.DIMENSIONS; faceHeight++) { //go through the image lines
+            //go through the image lines
+            for (int faceHeight = 0; faceHeight < Constants.DIMENSIONS; faceHeight++) {
                 for (int pictureWidth = 0; pictureWidth < Constants.PICTURE_WIDTH; pictureWidth++) {
 
                     Side sideToPrint = printLayout.get(pictureHeight).get(pictureWidth);
@@ -156,10 +213,19 @@ public final class Cube{
         }
     }
 
+    /*
+    Outputs a blank line of a face for the purposes of formatting
+     */
     private void printBlankLine() {
         System.out.print("    ");
     }
 
+    /*
+    Outputs the color initial of each color in a given row of a given face
+
+    @params side What side of the cube of which we are printing the colors
+            row  What row of the given side we are printing
+     */
     private void printFaceLine(Side side, int row) {
         Face face = _cubeFaces.get(side);
         StringBuilder outputLine = new StringBuilder();
@@ -175,6 +241,9 @@ public final class Cube{
     }
 
 
+    /*
+
+     */
     public void rotate(Side side, Direction direction) {
         Objects.requireNonNull(side);
         Objects.requireNonNull(direction);

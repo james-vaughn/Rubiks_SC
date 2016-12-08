@@ -1,4 +1,6 @@
-//represents face directions for sides on the cube
+/*
+Represents face directions for sides on the cube
+ */
 public enum Side {
     FRONT,
     BACK,

@@ -1,7 +1,14 @@
 import java.util.*;
 
+/*
+Container for the mapping of sides to their neighbors
+ */
 public final class Neighbors {
 
+    /*
+    Map of a side to all of the neighbors of that side;
+    The neighbors consist of associated sides and directions from that side to the current side
+     */
     public static final Map<Side, List<Pair<Direction,Side>>> NeighborMappings;
 
     //directions based off of the net in the design doc
@@ -39,8 +46,6 @@ public final class Neighbors {
 	Rotation is key here, as Back has nothing above it now, but if we slide it, Top is above it, so it has top as a side
 
 	Ultimately, we need this info to know what part of what face a certain rotation would affect (used in rotator)
-
-	Now back to the show.
      */
     static {
         Map<Side, List<Pair<Direction,Side>>> mappings = new HashMap<>();

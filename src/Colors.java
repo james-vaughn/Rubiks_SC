@@ -1,4 +1,6 @@
-//representation for possible side colors
+/*
+representation for possible square colors
+ */
 public enum Colors {
     RED,
     ORANGE,
