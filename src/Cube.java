@@ -417,7 +417,13 @@ public final class Cube{
             }
         }
 
+        /**
+         * Class which exposes the private methods of Rotator for testing purposes
+         */
         public class Exposer {
+
+            //not adding docstrings for the exposing methods as the methods themselves have docstrings
+            //and these methods simply expose said methods
 
             public void rotateFaceExposed(Side side) {
                 rotateFace(side);
@@ -441,7 +447,13 @@ public final class Cube{
         }
     }
 
+    /**
+     * Class which exposes the private methods of Cube for testing purposes
+     */
     public class Exposer {
+
+        //not adding docstrings for the exposing methods as the methods themselves have docstrings
+        //and these methods simply expose said methods
 
         private Rotator.Exposer _rotatorExposer = _rotator. new Exposer();
 
