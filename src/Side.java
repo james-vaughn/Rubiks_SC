@@ -1,4 +1,4 @@
-/*
+/**
 Represents face directions for sides on the cube
  */
 public enum Side {

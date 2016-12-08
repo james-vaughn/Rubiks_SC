@@ -1,5 +1,5 @@
-/*
-representation for possible square colors
+/**
+Representation for possible square colors
  */
 public enum Colors {
     RED,

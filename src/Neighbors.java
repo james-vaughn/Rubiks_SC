@@ -1,11 +1,11 @@
 import java.util.*;
 
-/*
+/**
 Container for the mapping of sides to their neighbors
  */
 public final class Neighbors {
 
-    /*
+    /**
     Map of a side to all of the neighbors of that side;
     The neighbors consist of associated sides and directions from that side to the current side
      */
@@ -13,7 +13,7 @@ public final class Neighbors {
 
     //directions based off of the net in the design doc
 
-    /*
+    /**
     Essentially, to get the associated directions and side, you must look at the net (or an actual cube)
 
     The associate sides are the adjacent sides which touch the current face. The only faces which do not
