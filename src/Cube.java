@@ -287,14 +287,22 @@ public final class Cube{
 
         }
 
+        /**
+         * Performs the necessary operations to mimic a clockwise face turn of a cube
+         * @param side Side of the cube to rotate
+         */
         private void rotateClockwise(Side side) {
             rotateFace(side);
             adjustNeighbors(side);
         }
 
-        //1 2 3       7 4 1  <-- reverse of left
-        //4 5 6  ==>  8 5 2
-        //7 8 9       9 6 3  <-- reverse of right
+        /**
+         * Rotates the squares on a given face to imitate a clockwise rotation
+         *1 2 3       7 4 1  <-- reverse of left
+         *4 5 6  ==>  8 5 2
+         *7 8 9       9 6 3  <-- reverse of right
+         * @param side Side to rotate
+         */
         private void rotateFace(Side side) {
             Face face = _cubeFaces.get(side);
             Colors[] tempColors = face.getTop();
@@ -305,6 +313,11 @@ public final class Cube{
             face.setRight(tempColors);
         }
 
+        /**
+         * Reverse the order of a given array of colors
+         * @param colors Array of colors to reverse
+         * @return The reverse or the inputted array; the original array will stay in tact
+         */
         private Colors[] reverseColors(Colors[] colors) {
             Colors[] reverse = new Colors[colors.length];
 
@@ -315,6 +328,11 @@ public final class Cube{
             return reverse;
         }
 
+        /**
+         * Performs a rotation of the neighboring faces' rows/columns to mimic a face rotation on a rubiks cube.
+         * The rows/columns for the neighbors get rotated between the actual faces, not internally to the face
+         * @param side Side whose neighbors are to be manipulated
+         */
         private void adjustNeighbors(Side side) {
 
             List<Pair<Direction,Side>> mapping = Neighbors.NeighborMappings.get(side);
@@ -336,7 +354,12 @@ public final class Cube{
             setNeighborsColors(tempNeighbor.first(), _cubeFaces.get(tempNeighbor.second()), tempColors);
         }
 
-        //complexity 4
+        /**
+         * Returns the proper row/column of a given face based on the associated direction
+         * @param direction Direction from the center of the given face; dictates what row or column to select
+         * @param neighbor Face to get the color array from
+         * @return A cloned array of colors matching the ones of a given face in a given direction
+         */
         private Colors[] colorsFromNeighbor(Direction direction, Face neighbor) {
             Colors[] colors = new Colors[Constants.DIMENSIONS];
 
@@ -364,7 +387,13 @@ public final class Cube{
             return colors;
         }
 
-        //complexity 4
+        /**
+         * Replaces the colors of a given face with a new set; the colors to replace are dictated by a given direction
+         * from the center piece of the face
+         * @param direction Which row/col to replace
+         * @param neighbor Which face of which to replace the colors
+         * @param replacement Color array to replace the current row/col
+         */
         private void setNeighborsColors(Direction direction, Face neighbor, Colors[] replacement) {
             switch (direction) {
                 case TOP:
